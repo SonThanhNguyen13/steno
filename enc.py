@@ -1,7 +1,16 @@
+import argparse
+import time
 from Crypto.Cipher import AES
 import cv2
 import numpy as np
 import pywt
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-i', '--image', required='True', help='Image')
+parser.add_argument('-k', '--key', required='True', help='AES key')
+parser.add_argument('-v', '--iv', required='True', help='Initialization vector for AES')
+parser.add_argument('-s', '--save', default='result', help = 'Result dir')
+args = parser.parse_args()
 
 def read_key_and_iv(key_file, iv_file):
     with open(key_file, 'r') as f:
@@ -64,16 +73,17 @@ def padding(message):
     return message
 
 def main():
-    message = input('Nhap thong diep (<= 16 ky tu): ')
+    message = input('Nhap thong diep (toi da 16 ky tu): ')
+    start = time.time()
     message = padding(message)
-    key, iv = read_key_and_iv('key.txt', 'iv.txt')
+    key, iv = read_key_and_iv(args.key, args.iv)
     cipher = encrypt_message(message, key, iv)
-    # with open('enc_mess.txt', 'w') as f:
-        # f.write(cipher)
-    steno_img, H = encrypt('lena.png', cipher)
-    np.save('H', H)
-    cv2.imwrite('result.png', steno_img)
-    print('Stenography image: result.png')
+    steno_img, H = encrypt(args.image, cipher)
+    np.save('{}/matrix'.format(args.save), H)
+    cv2.imwrite('{}/result.png'.format(args.save), steno_img)
+    print('Stenography image: {}/result.png'.format(args.save))
+    end = time.time()
+    print("Encrpyt message in: {:.2f} s".format(end - start))
 
 if __name__ == '__main__':
     main()

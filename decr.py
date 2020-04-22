@@ -1,8 +1,16 @@
-import math
+import argparse
+import time
 from Crypto.Cipher import AES
 import cv2
 import numpy as np
 import pywt
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-i', '--image', required='True', help='Stenography image')
+parser.add_argument('-k', '--key', required='True', help='AES key')
+parser.add_argument('-v', '--iv', required='True', help='Initialization vector for AES')
+parser.add_argument('-m', '--matrix', required = 'True', help='Difference Matrix ')
+args = parser.parse_args()
 
 def read_key_and_iv(key_file, iv_file):
     with open(key_file, 'r') as f:
@@ -25,9 +33,9 @@ def decrypt_message(ciphertext, key, iv):
     obj = AES.new(key, AES.MODE_CBC, iv)
     return(obj.decrypt(message))
 
-def decrypt(image):
+def decrypt(image, matrix):
     img = cv2.imread(image, cv2.IMREAD_GRAYSCALE)
-    H = np.load('H.npy')
+    H = np.load(matrix)
     img = img + H
     coeffs2 = pywt.dwt2(img, 'haar')
     LL, (LH, HL, HH) = coeffs2
@@ -56,10 +64,13 @@ def decrypt(image):
                 
 
 def main():
-    key, iv = read_key_and_iv('key.txt', 'iv.txt')
-    ciphertext = decrypt('result.png')
+    start = time.time()
+    key, iv = read_key_and_iv(args.key, args.iv)
+    ciphertext = decrypt(args.image, args.matrix)
     message = decrypt_message(ciphertext, key, iv)
     print(message)
+    end = time.time()
+    print("Decrypt message in: {:.2f} s".format(end - start))
 
 if __name__ == '__main__':
     main()
