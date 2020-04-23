@@ -1,14 +1,16 @@
 import argparse
 import time
+import math
 from Crypto.Cipher import AES
 import cv2
 import numpy as np
 import pywt
+from PIL import Image
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--image', required='True', help='Image')
 parser.add_argument('-k', '--key', required='True', help='AES key')
-parser.add_argument('-v', '--iv', required='True', help='Initialization vector for AES')
+parser.add_argument('-v', '--iv', required='True', help='AES initilization vector')
 parser.add_argument('-s', '--save', default='result', help = 'Result dir')
 args = parser.parse_args()
 
@@ -20,14 +22,15 @@ def read_key_and_iv(key_file, iv_file):
     return key, iv
 
 def encrypt_message(message, key, iv):
-    obj = AES.new(key, AES.MODE_CBC, iv)
+    key = bytes(key, 'utf-8')
+    iv = bytes(iv, 'utf-8')
+    message = bytes(message, 'utf-8')
+    obj = AES.new(key, AES.MODE_CBC, iv=iv)
     ciphertext = obj.encrypt(message)
     ciphertext = "".join([bin(i)[2:].zfill(8) for i in ciphertext])
     return ciphertext
 
-def encrypt(image, ciphertext):
-    img = cv2.imread(image, cv2.IMREAD_GRAYSCALE)
-    img = np.float32(img)
+def encrypt(img, ciphertext):
     coeffs2 = pywt.dwt2(img, 'haar')
     LL, (LH, HL, HH) = coeffs2
     result = []
@@ -63,27 +66,36 @@ def encrypt(image, ciphertext):
         result[i] = np.array(result[i])
     data = (result[0], (result[1], result[2], result[3]))
     rmk_origin = pywt.idwt2(data, 'haar')
-    rmk = rmk_origin.astype('uint64')
+    rmk = rmk_origin.astype('uint8')
     H = rmk_origin - rmk
     return rmk, H
     
 def padding(message):
-    if len(message) < 16:
-        message = message.ljust(16)
-    return message
+    if len(message) % 16 == 0:
+        return message
+    else:
+        n = math.ceil(len(message) / 16)
+        return message.ljust(n * 16)
 
 def main():
-    message = input('Nhap thong diep (toi da 16 ky tu): ')
-    start = time.time()
+    message = input('Nhap thong diep: ')
+    img = cv2.imread(args.image, cv2.IMREAD_GRAYSCALE)
     message = padding(message)
+    with open('len.txt', 'w') as f:
+        f.write(str(len(message)))
+    start = time.time()
     key, iv = read_key_and_iv(args.key, args.iv)
     cipher = encrypt_message(message, key, iv)
-    steno_img, H = encrypt(args.image, cipher)
+    steno_img, H = encrypt(img, cipher)
     np.save('{}/matrix'.format(args.save), H)
     cv2.imwrite('{}/result.png'.format(args.save), steno_img)
     print('Stenography image: {}/result.png'.format(args.save))
+    print('Difference matrix: {}/matrix.npy'.format(args.save))
     end = time.time()
     print("Encrpyt message in: {:.2f} s".format(end - start))
+    img = Image.fromarray(steno_img)
+    img.show()
+
 
 if __name__ == '__main__':
     main()
