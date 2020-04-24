@@ -9,6 +9,6 @@
     output: key (key.txt), Initilization Vector (iv.txt)
  ### Encrypt: 
     python3 enc.py -i 'image_path' -k key.txt -v iv.txt (optional: -s 'save_dir', default: result/)
-    output: A steganography image (.png), a difference matrix (.npy), len message (len.txt)
+    output: A steganography image (.png), a difference matrix (.npy), message's length (len.txt)
  ### Decrypt: 
     python3 decr.py -i 'image_path' -k key.txt -v iv.txt -m 'difference_matrix_path' -l 'len_message_file_path'
