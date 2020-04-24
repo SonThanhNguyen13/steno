@@ -78,7 +78,7 @@ def padding(message):
         return message.ljust(n * 16)
 
 def main():
-    message = input('Nhap thong diep: ')
+    message = input('Insert message: ')
     img = cv2.imread(args.image, cv2.IMREAD_GRAYSCALE)
     message = padding(message)
     with open('len.txt', 'w') as f:
