@@ -13,6 +13,6 @@
     output: A steganography image (.png), a difference matrix (.npy), message's length (len.txt)
  ### Decrypt: 
     python3 decr.py -i 'image_path' -k 'key_path' -v 'initilization_vector_path' -m 'difference_matrix_path' -l 'len_message_file_path'
- ![cat](https://user-images.githubusercontent.com/45412532/80194093-1798a800-8644-11ea-81f8-f99a0ce32c19.png =100x20)
+ ![cat](https://user-images.githubusercontent.com/45412532/80194093-1798a800-8644-11ea-81f8-f99a0ce32c19.png)
 
     
