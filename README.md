@@ -19,6 +19,13 @@
  ### Steganography Image: 
  <img src='https://user-images.githubusercontent.com/45412532/80194594-cdfc8d00-8644-11ea-9d8d-0587f660819d.png' width="250" height="500">
 
+## Decrypt original image:
+ <img src = 'https://user-images.githubusercontent.com/45412532/80275663-02d41700-870d-11ea-9b13-e7365b95c99a.png' >
+
+## Decrypt the stenography image:
+ <img src = 'https://user-images.githubusercontent.com/45412532/80275684-1d0df500-870d-11ea-83be-8c612d753d1b.png'>
+
+
  
  
 
