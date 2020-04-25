@@ -81,7 +81,7 @@ def main():
     message = input('Insert message: ')
     img = cv2.imread(args.image, cv2.IMREAD_GRAYSCALE)
     message = padding(message)
-    with open('len.txt', 'w') as f:
+    with open('{}/len.txt'.format(args.save), 'w') as f:
         f.write(str(len(message)))
     start = time.time()
     key, iv = read_key_and_iv(args.key, args.iv)
@@ -91,6 +91,7 @@ def main():
     cv2.imwrite('{}/result.png'.format(args.save), steno_img)
     print('Stenography image: {}/result.png'.format(args.save))
     print('Difference matrix: {}/matrix.npy'.format(args.save))
+    print("Message's length: {}/len.txt".format(args.save))
     end = time.time()
     print("Encrpyt message in: {:.2f} s".format(end - start))
     img = Image.fromarray(steno_img)
