@@ -34,7 +34,7 @@ class Application(tk.Frame):
         self.panel.place(x=50, y=100)
         self.image_path = tk.Label(textvariable=self.img_path)
         self.image_path.place(x=100, y=530)
-        self.select_image_button = tk.Button(text='Select', command=self.show)
+        self.select_image_button = tk.Button(text='Select image', command=self.show)
         self.select_image_button.place(x=200, y=530)
         self.key_path_text = tk.StringVar()
         self.key_path_text.set('None')
