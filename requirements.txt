@@ -1,5 +1,5 @@
 numpy==1.18.2
 opencv-python==4.2.0.34
-Pillow==7.1.1
+Pillow==8.2.0
 pycryptodome==3.9.7
 PyWavelets==1.1.1
