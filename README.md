@@ -8,22 +8,25 @@
  ### Gen key: 
     python3 gen_key.py
     output: key (key.txt), Initilization Vector (iv.txt)
- ### Encrypt: 
+ ### Hide message: 
     python3 stegano.py -i 'image_path' -k 'key_path' -v 'initilization_vector_path' (optional: -s 'save_dir', default: result/)
     output: A steganography image (.png), a difference matrix (.npy), message's length (len.txt)
- ### Decrypt: 
+ ### Extract message: 
     python3 extract.py -i 'image_path' -k 'key_path' -v 'initilization_vector_path' -m 'difference_matrix_path' -l 'len_message_file_path'
- ### Original Image:
+## Original Image:
  <img src='https://user-images.githubusercontent.com/45412532/80194093-1798a800-8644-11ea-81f8-f99a0ce32c19.png'  width="250" height="500">
  
- ### Steganography Image: 
+## Steganography Image: 
  <img src='https://user-images.githubusercontent.com/45412532/80194594-cdfc8d00-8644-11ea-9d8d-0587f660819d.png' width="250" height="500">
 
-## Decrypt the original image:
- <img src = 'https://user-images.githubusercontent.com/45412532/80275663-02d41700-870d-11ea-9b13-e7365b95c99a.png' >
+## Hide message example
+  <img src='https://user-images.githubusercontent.com/45412532/136491190-9cb41e57-d209-4a91-a82c-43f5277b97c6.PNG'>
 
-## Decrypt the stenography image:
- <img src = 'https://user-images.githubusercontent.com/45412532/80275684-1d0df500-870d-11ea-83be-8c612d753d1b.png'>
+## Extract the original image:
+ <img src = 'https://user-images.githubusercontent.com/45412532/136491360-5e0b341d-ab11-45e1-ac89-13c3c4e23eb8.PNG' >
+
+## Extract the stenography image:
+ <img src = 'https://user-images.githubusercontent.com/45412532/136491396-017da4ca-5002-487c-a1a4-b33f825c1be4.PNG'>
 
 
  
