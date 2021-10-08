@@ -65,16 +65,16 @@ class Application(tk.Frame):
         self.select_save_button = tk.Button(
             text='Select', command=self.select_save)
         self.select_save_button.place(x=650, y=300)
-        self.encrypt_button = tk.Button(
-            text='Encrypt', fg='red', command=self.start_encrypt)
-        self.encrypt_button.config(font=self.labelfont)
-        self.encrypt_button.place(x=330, y=600)
+        self.run_button = tk.Button(
+            text='Encrypt', fg='red', command=self.run)
+        self.run_button.config(font=self.labelfont)
+        self.run_button.place(x=330, y=600)
         self.message_input_label = tk.Label(text='Message')
         self.message_input_label.config(font=self.labelfont)
         self.message_input_label.place(x=400, y=400)
         self.message_imput = tk.Entry()
         self.message_imput.place(x=550, y=400, width=200, height=30)
-        self.message_imput.bind('<Key-Return>', self.start_encrypt)
+        self.message_imput.bind('<Key-Return>', self.run)
 
     def open_file(self):
         file_name = askopenfilename(title='open')
@@ -188,7 +188,7 @@ class Application(tk.Frame):
             matrix[i] = np.array(matrix[i])
         return matrix
 
-    def encrypt(self, img, ciphertext):
+    def start_stegano(self, img, ciphertext):
         coeffs2 = pywt.dwt2(img, 'haar')
         LL, (LH, HL, HH) = coeffs2
         sub_imgs = []
@@ -215,7 +215,7 @@ class Application(tk.Frame):
             n = math.ceil(len(message) / 16)
             return message.ljust(n * 16)
 
-    def start_encrypt(self, event=None):
+    def run(self, event=None):
         if self.img_dir is None or self.key_dir is None or self.iv_dir is None or self.save_dir is None:
             messagebox.showerror('Error', 'Please input all file')
         else:
@@ -227,13 +227,13 @@ class Application(tk.Frame):
             start = time.time()
             key, iv = self.read_key_and_iv(self.key_dir, self.iv_dir)
             cipher = self.encrypt_message(message, key, iv)
-            steno_img, H = self.encrypt(img, cipher)
+            steno_img, H = self.start_stegano(img, cipher)
             np.save('{}/matrix'.format(self.save_dir), H)
             cv2.imwrite('{}/result.png'.format(self.save_dir), steno_img)
             end = time.time()
             messagebox.showinfo(
                 'Success',
-                'Success\n Encrpyt message in: {:.2f} s'.format(
+                'Success hide message in: {:.2f} s'.format(
                     end - start))
 
 

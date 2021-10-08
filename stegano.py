@@ -10,7 +10,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--image', required='True', help='Image')
 parser.add_argument('-k', '--key', required='True', help='AES key')
 parser.add_argument('-v', '--iv', required='True', help='AES initilization vector')
-parser.add_argument('-s', '--save', default='result', help = 'Result dir')
+parser.add_argument('-s', '--save', default='result', help='Result dir')
 args = parser.parse_args()
 
 
@@ -84,7 +84,7 @@ def to_np_array(matrix):
     return matrix
 
 
-def encrypt(img, ciphertext):
+def start_stegano(img, ciphertext):
     coeffs2 = pywt.dwt2(img, 'haar')
     LL, (LH, HL, HH) = coeffs2
     sub_imgs = []
@@ -103,7 +103,7 @@ def encrypt(img, ciphertext):
     rmk = rmk_origin.astype('uint8')
     H = rmk_origin - rmk
     return rmk, H
-    
+
 
 def padding(message):
     if len(message) % 16 == 0:
@@ -122,7 +122,7 @@ def main():
     start = time.time()
     key, iv = read_key_and_iv(args.key, args.iv)
     cipher = encrypt_message(message, key, iv)
-    steno_img, H = encrypt(img, cipher)
+    steno_img, H = start_stegano(img, cipher)
     np.save('{}/matrix'.format(args.save), H)
     cv2.imwrite('{}/result.png'.format(args.save), steno_img)
     print('Stenography image: {}/result.png'.format(args.save))

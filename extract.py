@@ -9,8 +9,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--image', required='True', help='Stenography image')
 parser.add_argument('-k', '--key', required='True', help='AES key')
 parser.add_argument('-v', '--iv', required='True', help='Initialization vector for AES')
-parser.add_argument('-m', '--matrix', required = 'True', help='Difference Matrix ')
-parser.add_argument('-l', '--length', required = 'True', help='Message Length')
+parser.add_argument('-m', '--matrix', required='True', help='Difference Matrix ')
+parser.add_argument('-l', '--length', required='True', help='Message Length')
 args = parser.parse_args()
 
 
@@ -58,13 +58,13 @@ def get_ciphertext(matrix, length):
     ciphertext = ''
     for j in range(rows):
         for k in range(num):
-            for i in range(1,4):
+            for i in range(1, 4):
                 ciphertext += matrix[i][j][k][-1]
                 if len(ciphertext) == length * 8:
                     return ciphertext
 
 
-def decrypt(image, matrix, length):
+def extract(image, matrix, length):
     img = cv2.imread(image, cv2.IMREAD_GRAYSCALE)
     H = np.load(matrix)
     img = img + H
@@ -91,7 +91,7 @@ def main():
     start = time.time()
     key, iv = read_key_and_iv(args.key, args.iv)
     length = read_msg_length(args.length)
-    ciphertext = decrypt(args.image, args.matrix, length)
+    ciphertext = extract(args.image, args.matrix, length)
     message = decrypt_message(ciphertext, key, iv)
     print('Message: {}'.format(str(message).replace("b'", "")))
     end = time.time()

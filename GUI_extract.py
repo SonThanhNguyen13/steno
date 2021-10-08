@@ -1,5 +1,4 @@
 import time
-import math
 from Crypto.Cipher import AES
 import cv2
 import numpy as np
@@ -76,9 +75,9 @@ class Application(tk.Frame):
         self.len_message = tk.Label(textvariable=self.len_message_text)
         self.len_message.place(x=550, y=400)
         self.select_len_button = tk.Button(
-            text='Select',command=self.select_len
+            text='Select', command=self.select_len
         )
-        self.select_len_button.place(x=650,y=400)
+        self.select_len_button.place(x=650, y=400)
         self.message_label = tk.Label(text='Message')
         self.message_label.config(font=self.labelfont)
         self.message_label.place(x=120, y=620)
@@ -87,11 +86,11 @@ class Application(tk.Frame):
         self.message = tk.Label(textvariable=self.message_text)
         self.message.config(font=self.messagefont)
         self.message.place(x=250, y=620)
-        self.decrypt_button = tk.Button(
-            text='Decrypt', fg='red', command=self.start_decrypt)
-        self.decrypt_button.config(font=self.labelfont)
-        self.decrypt_button.place(x=330, y=700)
-            
+        self.extract_button = tk.Button(
+            text='Extract', fg='red', command=self.start_extract)
+        self.extract_button.config(font=self.labelfont)
+        self.extract_button.place(x=330, y=700)
+
     def open_file(self):
         file_name = askopenfilename(title='open')
         return file_name
@@ -99,7 +98,7 @@ class Application(tk.Frame):
     def open_dir(self):
         file_name = askdirectory(title='open')
         return file_name
-    
+
     def select_len(self):
         try:
             len_dir = self.open_file()
@@ -110,7 +109,7 @@ class Application(tk.Frame):
         except TypeError:
             return
         except UnicodeDecodeError:
-            messagebox.showerror('Error', 'Please choose again')    
+            messagebox.showerror('Error', 'Please choose again')
 
     def select_matrix(self):
         try:
@@ -176,12 +175,10 @@ class Application(tk.Frame):
         decr = AES.new(key, AES.MODE_CBC, iv=iv)
         return(decr.decrypt(message))
 
-
     def to_list(self, matrix):
         for i in range(len(matrix)):
             matrix[i] = matrix[i].tolist()
         return matrix
-
 
     def to_bin(self, matrix):
         for i in range(len(matrix)):
@@ -191,20 +188,18 @@ class Application(tk.Frame):
                     matrix[i][j][k] = bin(matrix[i][j][k]).replace('0b', "").zfill(8)
         return matrix
 
-
     def get_ciphertext(self, matrix, length):
         rows = len(matrix[1])
         num = len(matrix[1][1])
         ciphertext = ''
         for j in range(rows):
             for k in range(num):
-                for i in range(1,4):
+                for i in range(1, 4):
                     ciphertext += matrix[i][j][k][-1]
                     if len(ciphertext) == length * 8:
                         return ciphertext
 
-
-    def decrypt(self, image, matrix, length):
+    def extract(self, image, matrix, length):
         try:
             img = cv2.imread(image, cv2.IMREAD_GRAYSCALE)
             H = np.load(matrix)
@@ -223,18 +218,19 @@ class Application(tk.Frame):
         except ValueError:
             messagebox.showerror('Error', 'Please select ".npy matrix file')
 
-    def start_decrypt(self):
+    def start_extract(self):
         if self.img_dir is None or self.key_dir is None or self.iv_dir is None or self.matrix_dir is None or self.len is None:
             messagebox.showerror('Error', 'Please input all file')
         else:
             start = time.time()
             key, iv = self.read_key_and_iv(self.key_dir, self.iv_dir)
-            ciphertext = self.decrypt(self.img_dir, self.matrix_dir, self.len)
+            ciphertext = self.extract(self.img_dir, self.matrix_dir, self.len)
             message = self.decrypt_message(ciphertext, key, iv)
             message = '{}'.format(str(message).replace("b'", ""))
             self.change_len_and_mess(self.message_text, message)
             end = time.time()
-            messagebox.showinfo('Success', 'Success decrypt message in {:.2f} s'.format(end - start))
+            messagebox.showinfo('Success', 'Success extract message in {:.2f} s'.format(end - start))
+
 
 def main():
     root = tk.Tk()

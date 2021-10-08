@@ -9,10 +9,10 @@
     python3 gen_key.py
     output: key (key.txt), Initilization Vector (iv.txt)
  ### Encrypt: 
-    python3 enc.py -i 'image_path' -k 'key_path' -v 'initilization_vector_path' (optional: -s 'save_dir', default: result/)
+    python3 stegano.py -i 'image_path' -k 'key_path' -v 'initilization_vector_path' (optional: -s 'save_dir', default: result/)
     output: A steganography image (.png), a difference matrix (.npy), message's length (len.txt)
  ### Decrypt: 
-    python3 decr.py -i 'image_path' -k 'key_path' -v 'initilization_vector_path' -m 'difference_matrix_path' -l 'len_message_file_path'
+    python3 extract.py -i 'image_path' -k 'key_path' -v 'initilization_vector_path' -m 'difference_matrix_path' -l 'len_message_file_path'
  ### Original Image:
  <img src='https://user-images.githubusercontent.com/45412532/80194093-1798a800-8644-11ea-81f8-f99a0ce32c19.png'  width="250" height="500">
  
