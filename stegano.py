@@ -129,7 +129,7 @@ def main():
     print('Difference matrix: {}/matrix.npy'.format(args.save))
     print("Message's length: {}/len.txt".format(args.save))
     end = time.time()
-    print("Encrpyt message in: {:.2f} s".format(end - start))
+    print("Hide message in: {:.2f} s".format(end - start))
 
 
 if __name__ == '__main__':

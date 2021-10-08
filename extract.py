@@ -95,7 +95,7 @@ def main():
     message = decrypt_message(ciphertext, key, iv)
     print('Message: {}'.format(str(message).replace("b'", "")))
     end = time.time()
-    print("Decrypt message in: {:.2f} s".format(end - start))
+    print("Extract message in: {:.2f} s".format(end - start))
 
 
 if __name__ == '__main__':
