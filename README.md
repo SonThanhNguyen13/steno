@@ -22,10 +22,10 @@
 ## Hide message example
   <img src='https://user-images.githubusercontent.com/45412532/136491190-9cb41e57-d209-4a91-a82c-43f5277b97c6.PNG'>
 
-## Extract the original image:
+## Extract the stenography image:
  <img src = 'https://user-images.githubusercontent.com/45412532/136491360-5e0b341d-ab11-45e1-ac89-13c3c4e23eb8.PNG' >
 
-## Extract the stenography image:
+## Extract the original image:
  <img src = 'https://user-images.githubusercontent.com/45412532/136491396-017da4ca-5002-487c-a1a4-b33f825c1be4.PNG'>
 
 
